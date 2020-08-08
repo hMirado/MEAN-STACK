@@ -1,6 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {group} from "@angular/animations";
+import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
+
+
+declare var Message: any;
+
 
 @Component({
     selector: 'app-register',
@@ -8,12 +13,16 @@ import {group} from "@angular/animations";
     styleUrls: ['./register.component.css']
 })
 
+
 export class RegisterComponent implements OnInit {
 
     registerForm: FormGroup;
+    processing = false;
 
     constructor(
         private formBuilder: FormBuilder,
+        private authService: AuthService,
+        private router: Router
     ) {
         this.createRegisterForm();
     }
@@ -65,7 +74,6 @@ export class RegisterComponent implements OnInit {
         if (regExp.test(controls.value)) return null;
         else return {validatePassword: true};
     }
-
     /**
      * End of regEx validation
      */
@@ -90,7 +98,20 @@ export class RegisterComponent implements OnInit {
      * Submit function
      */
     onRegisterSubmit() {
-        console.log(this.registerForm);
-    }
+        this.processing = true;
+        const user = {
+            email: this.registerForm.get('email').value,
+            username: this.registerForm.get('username').value,
+            password: this.registerForm.get('password').value
+        };
 
+        this.authService.registerUser(user).subscribe(() => {
+                setTimeout(() => {
+                    this.router.navigate(['/login']);
+                }, 2000);
+            },
+            error => {
+                alert(error);
+            });
+    }
 }

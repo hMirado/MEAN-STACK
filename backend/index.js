@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const path = require('path'); // NodeJS Package for file paths
 const authentication = require('./routes/authentication');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 mongoose.connect(database.uri, {
     useNewUrlParser: true,
@@ -19,15 +20,29 @@ mongoose.connect(database.uri, {
 });
 
 
+/**
+ * MIDDLEWARE
+ */
+var corsOptions = {
+    origin: '',
+    optionsSuccessStatus: 200
+}
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
+app.use(cors({
+    origin: 'http://localhost:4200',
+}));
 app.use('/authentication', authentication);
 
+
+/**
+ * Connect server to Angular index.html
+ */
 // Afficher une page quand on saisi un url invalide
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/src/app/app.component.html'));
 });
+
 
 app.listen(port, function () {
     console.log("Running the server on port " + port);

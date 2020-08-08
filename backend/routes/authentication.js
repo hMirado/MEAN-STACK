@@ -45,12 +45,39 @@ router.post('/register', (req, res) => {
                                 res.json({success: false, message: 'Could not save user. Error : ' + error});
                             }
                         }
-                    } else res.json({success: true, message: 'User saved'});
+                    } else res.json({success: true, message: 'Account registered'});
                 });
             }
         }
     }
 });
 
+/*
+router.get('/checkEmail/: email', (req,res) => {
+   if (!req.params.email) res.json({ succes: false, message: 'E-mail was not provided' });
+   else {
+       User.findOne({email: req.params.email}, (error, user) => {
+           if (error) res.json({ success: false, message: error})
+           else {
+               if (user) res.json({ success: false, message: 'E-mail is already taken'});
+               else res.json({ success: false, message: 'E-mail is available'});
+           }
+       });
+   }
+});
+
+router.get('/checkUsername/: username', (req,res) => {
+   if (!req.params.email) res.json({ succes: false, message: 'Username was not provided' });
+   else {
+       User.findOne({username: req.params.username}, (error, user) => {
+           if (error) res.json({ success: false, message: error})
+           else {
+               if (user) res.json({ success: false, message: 'Username is already taken'});
+               else res.json({ success: false, message: 'Username is available'});
+           }
+       });
+   }
+});
+*/
 
 module.exports = router;

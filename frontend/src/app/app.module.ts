@@ -6,22 +6,29 @@ import {NavbarComponent} from './components/navbar/navbar.component';
 import {HomeComponent} from './components/home/home.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {RegisterComponent} from './components/register/register.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from '@angular/forms';
+import {AuthService} from './services/auth.service';
+import {HttpClientModule} from '@angular/common/http';
+import {LoginComponent} from './components/login/login.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    HomeComponent,
-      DashboardComponent,
-      RegisterComponent
-  ],
-  imports: [
-    BrowserModule,
-      AppRoutingModule,
-      ReactiveFormsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        HomeComponent,
+        DashboardComponent,
+        RegisterComponent,
+        LoginComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule
+    ],
+    providers: [AuthService],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+
+export class AppModule {
+}
