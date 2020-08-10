@@ -1,4 +1,8 @@
+var crypto = require("crypto").randomBytes(256).toString('hex');
+
+
 module.exports = {
     uri: 'mongodb://localhost:27017/mean-tuto-1', //+ this.db,
-  db: 'mean-tuto-1'
+    secret: crypto,
+    db: 'mean-tuto-1'
 };

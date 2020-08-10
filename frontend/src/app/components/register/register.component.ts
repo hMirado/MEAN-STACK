@@ -74,6 +74,7 @@ export class RegisterComponent implements OnInit {
         if (regExp.test(controls.value)) return null;
         else return {validatePassword: true};
     }
+
     /**
      * End of regEx validation
      */

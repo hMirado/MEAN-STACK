@@ -10,6 +10,11 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from './services/auth.service';
 import {HttpClientModule} from '@angular/common/http';
 import {LoginComponent} from './components/login/login.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastrModule} from 'ngx-toastr';
+import {ProfileComponent} from './components/profile/profile.component';
+import {FlashMessagesModule} from 'angular2-flash-messages';
+import {AuthGuard} from './guard/auth.guard';
 
 @NgModule({
     declarations: [
@@ -18,15 +23,22 @@ import {LoginComponent} from './components/login/login.component';
         HomeComponent,
         DashboardComponent,
         RegisterComponent,
-        LoginComponent
+        LoginComponent,
+        ProfileComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         ReactiveFormsModule,
-        HttpClientModule
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot({
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
+        }),
+        FlashMessagesModule
     ],
-    providers: [AuthService],
+    providers: [AuthService, AuthGuard],
     bootstrap: [AppComponent]
 })
 
