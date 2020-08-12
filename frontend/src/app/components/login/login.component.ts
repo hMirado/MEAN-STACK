@@ -4,6 +4,7 @@ import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {fadeInAnimation} from '../../animations';
+import {AuthGuard} from '../../guards/auth.guard';
 
 
 @Component({
@@ -16,14 +17,28 @@ import {fadeInAnimation} from '../../animations';
 export class LoginComponent implements OnInit {
     processing = false;
     loginForm: FormGroup;
+    previousUrl;
 
     constructor(
         private formBuilder: FormBuilder,
         private authService: AuthService,
         private router: Router,
-        private toastrService: ToastrService
+        private toastrService: ToastrService,
+        private authGuard: AuthGuard
     ) {
         this.createForm();
+    }
+
+
+    ngOnInit(): void {
+        if (this.authService.loggedIn())
+            this.router.navigateByUrl('/dashboard');
+
+        if (this.authGuard.redirecturl) {
+            this.toastrService.warning('You must be logged in to view that page');
+            this.previousUrl = this.authGuard.redirecturl;
+            this.authGuard.redirecturl = undefined;
+        }
     }
 
 
@@ -42,13 +57,19 @@ export class LoginComponent implements OnInit {
             password: this.loginForm.get('password').value
         };
 
+
         this.authService.login(user).subscribe((data: any) => {
             if (data.success) {
                 console.log(data);
-                this.authService.storeUserData(data.token, data.user);
+                //this.authService.storeUserData(data.token, data.user);
+                this.authService.setToken(data.token);
                 this.toastrService.success('Connexion réussi');
                 setTimeout(() => {
-                    this.router.navigate(['/dashboard']);
+                    if (this.previousUrl) {
+                        this.router.navigate([this.previousUrl]);
+                    } else {
+                        this.router.navigate(['/dashboard']);
+                    }
                 }, 3000);
             } else if (!data.succes) {
                 this.toastrService.error(data.message);
@@ -59,8 +80,4 @@ export class LoginComponent implements OnInit {
             this.toastrService.error(error.error.message);
         });
     }
-
-    ngOnInit(): void {
-    }
-
 }

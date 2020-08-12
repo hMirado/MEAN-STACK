@@ -9,9 +9,10 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 export class AuthService {
 
     domain = 'http://localhost:8080';
-    authToken;
-    user;
+    // authToken;
+    // user;
     headers: any;
+
 
     constructor(
         private http: HttpClient
@@ -27,21 +28,26 @@ export class AuthService {
     }
 
     logout() {
+        this.deleteToken();
+        /*
         this.authToken = null;
         this.user = null;
         localStorage.clear();
+         */
     }
 
+    /*
     storeUserData(token, user) {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
         this.authToken = token;
         this.user = user;
     }
+    */
 
     getProfile() {
         const token = localStorage.getItem('token');
-        this.authToken = token;
+        // this.authToken = token;
         let headers = new HttpHeaders();
         headers = headers.append('authorization', token);
         headers = headers.append('Content-Type', 'application/json');
@@ -49,9 +55,22 @@ export class AuthService {
         return this.http.get(this.domain + '/authentication/profile', {headers});
     }
 
+    setToken(token: string) {
+        localStorage.setItem('token', token);
+    }
+
+    getToken() {
+        return localStorage.getItem('token');
+    }
+
+    deleteToken() {
+        localStorage.removeItem('token');
+    }
+
     loggedIn() {
+        var token = this.getToken();
         const helper = new JwtHelperService();
-        return !helper.isTokenExpired(this.authToken);
+        return !helper.isTokenExpired(token);
     }
 }
 

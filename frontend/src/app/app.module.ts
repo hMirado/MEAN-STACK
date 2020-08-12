@@ -14,7 +14,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
 import {ProfileComponent} from './components/profile/profile.component';
 import {FlashMessagesModule} from 'angular2-flash-messages';
-import {AuthGuard} from './guard/auth.guard';
+import {AuthGuard} from './guards/auth.guard';
+import {NoAuthGuard} from './guards/no-auth.guard';
+import {BlogComponent} from './components/blog/blog.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +26,8 @@ import {AuthGuard} from './guard/auth.guard';
         DashboardComponent,
         RegisterComponent,
         LoginComponent,
-        ProfileComponent
+        ProfileComponent,
+        BlogComponent
     ],
     imports: [
         BrowserModule,
@@ -38,7 +41,7 @@ import {AuthGuard} from './guard/auth.guard';
         }),
         FlashMessagesModule
     ],
-    providers: [AuthService, AuthGuard],
+    providers: [AuthService, AuthGuard, NoAuthGuard],
     bootstrap: [AppComponent]
 })
 
